@@ -22,14 +22,14 @@
             <div class="form-group">
 		<label for="juridica">Es persona Juridica?</label>
                 <select  class="form-control" name="juridica" id="juridica">
-                    <option value="1">no</option>
-                    <option value="2">si</option>
+                    <option value="0">no</option>
+                    <option value="1">si</option>
                 </select>
             </div>
-            <div class="form-group" style="display:none" id="cuit">
-                <label for="cuit">Cuit</label><input type="text" class="form-control" name="cuit" id="cuit" placeholder="Ingrese numero de cuit" required />
+            <div class="form-group" style="display:none" id="divcuit">
+                <label for="cuit">Cuit</label><input type="text" class="form-control" name="cuit" id="cuit" placeholder="Ingrese numero de cuit"/>
             </div>
-            <div class="form-group" id="dni">
+            <div class="form-group" id="divdni">
                 <label for="dni">DNI</label><input type="text" class="form-control" name="dni" id="dni" placeholder="Ingrese numero de dni" required />
             </div>
             <div class="form-group">

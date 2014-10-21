@@ -1,5 +1,5 @@
 <?php //session_start();
-	require_once("/home/jaime/php/TP1PWII-Reparacion/classes/Usuario.php");
+	require_once("classes/Usuario.php");
 	if(isset($_SESSION['archivo']) && $_SESSION['archivo']!="" ){
 		$archivo =$_SESSION['archivo'];
 	}

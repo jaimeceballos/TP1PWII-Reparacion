@@ -25,15 +25,20 @@
 		}
 			
 	}elseif(!empty($_POST['formulario']) && $_POST['formulario'] == 'nuevo'){
-			$usuario  	= $_SESSION['usuario'];
-			$password 	= $_SESSION['pass'];
-			$apellido	= $_POST['apellido'];
-			$nombre		= $_POST['nombre'];
-			$edad		= $_POST['edad'];
+                        $user                   = unserialize($_SESSION['usuario']);
+			$args['usuario']	= $user->user;
+			$args['password'] 	= $user->pass;
+			$args['ape_nom']	= $_POST['ape_nom'];
+			$args['dni']		= $_POST['dni'];
+			$args['domicilio']	= $_POST['domicilio'];
+                        $args['telefono']       = $_POST['telefono'];
+                        $args['email']          = $_POST['email'];
+                        $args['juridica']       = $_POST['juridica'];
+                        $args['cuit']           = $_POST['cuit'];
 
 			
 			
-			$estado = alta_cliente($apellido,$nombre,$edad,$usuario,$password);
+			$estado = alta_cliente($args);
 			if($estado == 1){
 				$_SESSION['archivo'] = "nuevo.php";
 				header( "Location: ../index.php?conf=ok");

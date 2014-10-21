@@ -1,16 +1,17 @@
 <?php
     //require_once 'clienteDAO.php';
 					
-	function alta_cliente($ape_nom, $dni, $domicilio, $telefono, $email, $juridica,$cuit, $usuario, $password){
-		if($juridica){
-                    if($cuit == ""){
+	function alta_cliente($args){
+		if($args['juridica']=="1"){
+                    if($args['cuit'] == ""){
                         return "debe ingresar el numero de cuit";
                     }
                 }else{
-                    if($ape_nom !=""){
-                        if($dni !=""){
-                            if($domicilio!=""){
-                                
+                    if($args['ape_nom'] != ""){
+                        if($args['dni'] != ""){
+                            if($args['domicilio'] != ""){
+                                require_once '../dao/clienteDAO.php';
+                                return cliente_save($args);
                             }else{
                                 return "debe indicar el domicilio";
                             }

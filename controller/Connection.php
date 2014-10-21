@@ -1,9 +1,9 @@
 <?php
 	require_once("ConfigBD.php");
-	require_once("/home/jaime/php/TP1PWII-Reparacion/classes/Usuario.php");
+	require_once("../classes/Usuario.php");
 	class Connection
 	{
-		private function getDbConnection()
+		private static function getDbConnection()
 		{
 			$conn = new ConfigBD();
 			error_reporting(E_ALL);//notifica de todos los errores
