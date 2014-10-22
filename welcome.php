@@ -76,7 +76,7 @@
 									<a href="controller/controller.php?op=abm_Cliente">Alta/edicion de Clientes</a>
 								</li>
 								<li>
-									<a href="controller/controller.php?op=nuevo">Alta de Equipo</a>
+									<a href="controller/controller.php?op=abm_equipo">Alta de Equipo</a>
 								</li>
 								<li>
                                                                     <a href="controller/controller.php?op=buscar_form">Nueva orden de trabajo</a>

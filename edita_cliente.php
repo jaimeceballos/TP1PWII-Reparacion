@@ -48,7 +48,7 @@
             <div class="form-group">
                 <label for="email">Correo electronico</label><input type="email" class="form-control" name="email" id="email" value="<?php echo $cliente->email ?>"/>
             </div>
-            
+    <a href="controller/controller.php?op=abm_Cliente" class="btn btn-link">Volver al listado</a>        
     <button type="submit" class="btn btn-success pull-right">Modificar</button>
 </form>
 </div>

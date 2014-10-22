@@ -3,7 +3,7 @@ require_once("../controller/Connection.php");
     
 function persona_save($args) {
     
-    $conn = Connection::$CONN;
+    $conn = Connection::userConnection($args['usuario'], $args['password']);
     if ($conn !== false) {
         if(!empty($args['id'])){
             $id = $args['id'];

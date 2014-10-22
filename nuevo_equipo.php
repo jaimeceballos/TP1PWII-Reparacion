@@ -1,0 +1,52 @@
+<?php (!empty($_SESSION['tipos_equipo'])) ? $tipos_equipo = $_SESSION['tipos_equipo'] : $tipos_equipo = Array();
+      (!empty($_SESSION['clientes'])) ? $clientes = $_SESSION['clientes'] : $clientes = Array();
+?>
+
+<div class="row clearfix">
+
+    <div class="col-md-12 column">
+        <?php if (isset($conf)): ?>
+            <div class="alert alert-dismissable alert-info">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <strong>Cliente guardado correctamente</strong> 
+            </div>
+        <?php endif; ?>
+        <?php if (isset($err)): ?>
+            <div class="alert alert-dismissable alert-danger">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <strong>El cliente no se guardo</strong> 
+            </div>
+        <?php endif; ?>
+        <form role="form" method="POST" action = "controller/controller.php">
+
+            <input type="hidden" name="formulario" value="nuevo_equipo">
+            <div class="form-group">
+                <label for="tipo_equipo_id">Tipo Equipo</label><select  class="form-control" name="tipo_equipo_id" id="tipo_equipo_id" required>
+                    <option value="">Seleccione un tipo</option>
+                    <?php foreach ($tipos_equipo as $tipo): ?>
+                        <option value="<?php $tipo['id'] ?>"><?php echo $tipo['descripcion'] ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+            <div class="form-group">
+		<label for="cliente_id">Cliente</label>
+                <select  class="form-control" name="cliente_id" id="cliente_id" required>
+                    <option value="">Seleccione un cliente</option>
+                    <?php foreach ($clientes as $cliente): ?>
+                        <option value="<?php $cliente['id'] ?>"><?php echo $cliente['ape_nom'] ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="descripcion_equipo">Descripcion del equipo</label><textarea class="form-control" rows="4" cols="50" id="descripcion_equipo" name ="descripcion_equipo" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="estado_general">Estado general del equipo recibido</label><textarea class="form-control" rows="4" cols="50" id="estado_general" name ="estado_general" required></textarea>
+            </div>
+            
+     <a href="controller/controller.php?op=abm_equipo" class="btn btn-link">Volver al listado</a>
+     <button type="submit" class="btn btn-success pull-right">Guardar</button>
+     
+</form>
+</div>
+</div>

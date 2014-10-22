@@ -1,11 +1,11 @@
 <?php 
-	(isset($_SESSION['listado'])) ? $listado = $_SESSION['listado'] : $listado = Array();
+        (isset($_SESSION['listado'])) ? $listado = $_SESSION['listado'] : $listado = Array();
 
 ?>
 
 <div class="row clearfix">
 		<div class="col-md-12 column">
-                    <h1>Listado de clientes <small> <a href="controller/controller.php?op=nuevo" class="btn btn-xs btn-info" >Nuevo</a> </small></h1>
+                    <h1>Listado de clientes <small> <a href="controller/controller.php?op=alta_equipo" class="btn btn-xs btn-info" >Nuevo</a> </small></h1>
                     <hr>
 			<table class="table">
 				<thead>
@@ -14,27 +14,15 @@
 							ID
 						</th>
 						<th>
-							Apellido Nombre
+							Tipo Equipo
 						</th>
 						<th>
-							DNI
+							Propietario
 						</th>
 						<th>
-							Domicilio
+							Descripcion
 						</th>
                                                 <th>
-							Telefono
-						</th>
-                                                <th>
-							Email
-						</th>
-                                                <th>
-							Es Juridica
-						</th>
-                                                <th>
-							Cuit
-						</th>
-						<th>
 							
 						</th>
 					</tr>
@@ -47,27 +35,15 @@
 									<?php echo $fila['id']; ?>
 								</td>
 								<td>
-									<?php echo $fila['ape_nom']; ?>
+									<?php echo $fila['tipo_equipo_id']; ?>
 								</td>
 								<td>
-									<?php echo $fila['dni']; ?>
+									<?php echo $fila['cliente_id']; ?>
 								</td>
 								<td>
-									<?php echo $fila['domicilio']; ?>
+									<?php echo $fila['descripcion_equipo']; ?>
 								</td>
                                                                 <td>
-									<?php echo $fila['telefono']; ?>
-								</td>
-                                                                <td>
-									<?php echo $fila['email']; ?>
-								</td>
-                                                                <td>
-									<?php echo $fila['juridica']==1 ? 'si' : 'no'; ?>
-								</td>
-                                                                <td>
-									<?php echo $fila['cuit']; ?>
-								</td>
-								<td>
 									<a href="controller/controller.php?op=edit&row=<?php echo $fila['id'] ?>"> <i class="glyphicon glyphicon-edit"></i> </a>
                                                                         <a href="controller/controller.php?op=remove&row=<?php echo $fila['id'] ?>" onclick="return confirm('realmente desea eliminar este cliente?');"> <i class="glyphicon glyphicon-trash"></i> </a>
 								</td>

@@ -3,7 +3,7 @@
 	require_once("../classes/Usuario.php");
 	class Connection
 	{
-                public static $CONN;
+                private static $CONN;
 
                 private static function getDbConnection()
 		{
@@ -28,7 +28,11 @@
 			}
 		}
 		public static function userConnection($usuario,$password){
-			$conn = Connection::getDbConnection();
+                    
+                    if (Connection::$CONN){
+                        return Connection::$CONN;
+                    }else{
+                        $conn = Connection::getDbConnection();
 			if ($conn !== false) {
 		        try {
 		            $sql = "SELECT id,user,pass,rol FROM usuario WHERE user = :usuario and pass = :password";
@@ -54,7 +58,8 @@
 		        }catch (PDOException $e) {
 		            return false;
 		        }
-		    }
+                       }
+                    }
 					
 		}
 	}	

@@ -22,7 +22,7 @@ function cliente_save($args) {
         } elseif ($id > 0) {
             try {
                 $conn->beginTransaction();
-                $sql = "UPDATE cliente set apellido=:ape_nom, dni=:dni, domicilio=:domicilio telefono=:telefono, email=:email, juridica=:juridica,cuit=:cuit where id=:id";
+                $sql = "UPDATE cliente set apellido=:ape_nom, dni=:dni, domicilio=:domicilio, telefono=:telefono, email=:email, juridica=:juridica,cuit=:cuit where id=:id";
                 $query = $coneccion->prepare($sql);
                 $query->execute(array(':ape_nom' => $args['ape_nom'],
                     ':dni' => $args['dni'],
@@ -95,7 +95,7 @@ function get_clientes($usuario, $password) {
         try {
             $sql = "select c.id as id, p.ape_nom as ape_nom, p.dni as dni, p.domicilio as domicilio, "
                     . "p.telefono as telefono, p.email as email, p.juridica as juridica, p.cuit as cuit "
-                    . "from cliente c join persona p on c.persona_id =  p.id";
+                    . "from cliente c join persona p on c.persona_id =  p.id where  c.activo";
 
             $stmt = $conn->prepare($sql);
             $stmt->setFetchMode(PDO::FETCH_ASSOC);
@@ -129,16 +129,16 @@ function get_cliente_by_id($args) {
     }
 }
 
-function del_cliente_by_id($id, $usuario, $password) {
-    $coneccion = get_conection($usuario, $password);
+function del_cliente_by_id($args) {
+    $coneccion = Connection::userConnection($args['usuario'], $args['password']);
     if ($coneccion !== false) {
         try {
             $coneccion->beginTransaction();
-            $sql = "DELETE FROM clientes WHERE id = :id";
+            $sql = "UPDATE cliente set activo = 0 WHERE id = :id";
 
             $stmt = $coneccion->prepare($sql);
             $stmt->setFetchMode(PDO::FETCH_ASSOC);
-            $stmt->bindParam(':id', $id);
+            $stmt->bindParam(':id', $args['id']);
             $stmt->execute();
             $coneccion->commit();
             return 1;
@@ -161,7 +161,7 @@ function update_cliente_id($args){
 }
 
 function search($apellido,$nombre,$usuario,$password){
-    $coneccion = get_conection($usuario, $password);
+    $coneccion = Connection::userConnection($args['usuario'], $args['password']);
     if ($coneccion !== false) {
         try {
             $sql = "SELECT * FROM clientes WHERE apellido like :apellido and nombre like :nombre";// and edad = :edad";

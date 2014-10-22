@@ -42,9 +42,9 @@
             require_once '../dao/clienteDAO.php';
             return get_cliente_by_id($args);
         }
-        function borrar_cliente($id,$usuario,$password){
+        function borrar_cliente($args){
             require_once '../dao/clienteDAO.php';
-            return del_cliente_by_id($id,$usuario,$password);
+            return del_cliente_by_id($args);
         }
         function update_cliente($args){
             require_once '../dao/clienteDAO.php';
