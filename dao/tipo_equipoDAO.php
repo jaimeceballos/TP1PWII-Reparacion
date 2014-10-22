@@ -4,7 +4,7 @@ function get_tipos_equipo($usuario, $password) {
     $conn = Connection::userConnection($usuario, $password);
     if ($conn !== false) {
         try {
-            $sql = "select * from tipo_equipo";
+            $sql = "select id,descripcion from tipo_equipo";
 
             $stmt = $conn->prepare($sql);
             $stmt->setFetchMode(PDO::FETCH_ASSOC);

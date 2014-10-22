@@ -91,6 +91,18 @@
                          $args['estado_general']        = $_POST['estado_general'];
                          
                          $estado = alta_equipo($args);
+                         
+                         if($estado == 1){
+                               $_SESSION['tipos_equipo'] = listar_tipos_equipo($usuario->user, $usuario->pass);
+                               $_SESSION['clientes']     = listar_clientes($usuario, $password);
+                               $_SESSION['archivo'] = "nuevo_equipo.php";
+                               header( "Location: ../index.php?conf=ok");
+                         }else{
+                               $_SESSION['tipos_equipo'] = listar_tipos_equipo($usuario->user, $usuario->pass);
+                               $_SESSION['clientes']     = listar_clientes($usuario, $password);
+                               $_SESSION['archivo'] = "nuevo_equipo.php";
+                               header( "Location: ../index.php?err=no se pudo guardar.");
+                         }
              
         }
 
@@ -191,8 +203,27 @@
                         session_destroy();
                         die();
                     }
+                }elseif($_GET['op'] == 'edit_equipo' ){
+                    $args['id'] = $_GET['row'];
+                    $args['usuario'] = $usuario->user;
+                    $args['password'] = $usuario->pass;
+                    if($usuario->rol =='empleado'){
+                        
+                        $_SESSION['tipos_equipo'] = listar_tipos_equipo($usuario->user, $usuario->pass);
+                        $_SESSION['clientes']     = listar_clientes($usuario, $password);
+                        $_SESSION['archivo'] = "edit_equipo.php";
+			
+                        $equipo = obtener_equipo($args);
+                        $_SESSION['equipo'] = serialize($equipo);
+                        header("Location: ../index.php");
+                        die();
+                    
+                    }else{
+                        header( "Location: controller.php?op=salir");
+                        session_destroy();
+                        die();
+                    }
                 }
-
 		
 	}
         if(!empty($_GET['formulario']) && $_GET['formulario']=='buscar'){

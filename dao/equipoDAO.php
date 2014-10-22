@@ -28,13 +28,12 @@ function equipo_save($args) {
         if ($id === false) {
             try {
                 $conn->beginTransaction();
-                $sql = "INSERT INTO equipo(tipo_equipo_id,cliente_id,descripcion_equipo,estado_general) values(:tipo_equipo_id,:cliente_id,:descripcion_equipo,:estado_general)";
+                $sql = "INSERT INTO equipo(tipo_equipo_id,cliente_id,descripcion_equipo,estado_general) values(:tipo_equipo,:cliente,:descripcion,:estado)";
                 $query = $conn->prepare($sql);
-                $query->execute(array(':tipo_equipo_id' => $args['tipo_equipo_id'],
-                                      ':cliente:id' => $args['cliente_id'],
-                                      ':descripcion_equipo' => $args['descripcion_equipo'],
-                                      ':estado_general' => $args['estado_general']
-                                       ));
+                $query->execute(array(':tipo_equipo' => $args['tipo_equipo_id'],
+                                      ':cliente' => $args['cliente_id'],
+                                      ':descripcion' => $args['descripcion_equipo'],
+                                      ':estado' => $args['estado_general']));
                 $conn->commit();
                 return 1;
             } catch (PDOException $e) {
@@ -59,5 +58,24 @@ function equipo_save($args) {
             }
         }
         return 0;
+    }
+}
+
+function get_equipo_by_id($args) {
+    $coneccion = Connection::userConnection($args['usuario'], $args['password']);
+    if ($coneccion !== false) {
+        try {
+            $sql = "select id, tipo_equipo_id, cliente_id, descripcion_equipo, estado_general "
+                    . "from equipo where id = :id";
+
+            $stmt = $coneccion->prepare($sql);
+            $stmt->setFetchMode(PDO::FETCH_OBJ);
+            $stmt->bindParam(':id', $args['id']);
+            $stmt->execute();
+            $results = $stmt->fetch();
+            return $results;
+        } catch (PDOException $e) {
+            return -1;
+        }
     }
 }
