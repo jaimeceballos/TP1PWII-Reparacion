@@ -3,9 +3,14 @@ require_once("../controller/Connection.php");
     
 function persona_save($args) {
     
-    $conn = Connection::userConnection($args['usuario'], $args['password']);
+    $conn = Connection::$CONN;
     if ($conn !== false) {
-        $id = persona_exist($args);
+        if(!empty($args['id'])){
+            $id = $args['id'];
+            
+        }else{
+            $id = persona_exist($args);
+        }
         if ($id === false) {
             try {
                 $conn->beginTransaction();
@@ -16,7 +21,7 @@ function persona_save($args) {
                     ':domicilio' => $args['domicilio'],
                     ':telefono' => $args['telefono'],
                     ':email' => $args['email'],
-                    ':juridica' => $args['juridica'],
+                    ':juridica' => ($args['juridica']== '1' ? true : false ),
                     ':cuit' => $args['cuit']
                     ));
                 $conn->commit();
@@ -28,15 +33,14 @@ function persona_save($args) {
         } elseif ($id > 0) {
             try {
                 $conn->beginTransaction();
-                $sql = "UPDATE cliente set apellido=:ape_nom, dni=:dni, domicilio=:domicilio telefono=:telefono, email=:email, juridica=:juridica,cuit=:cuit where id=:id";
-                $query = $coneccion->prepare($sql);
+                $sql = "UPDATE persona p set p.ape_nom=:ape_nom, "
+                        . "p.domicilio=:domicilio, p.telefono=:telefono, p.email=:email "
+                        . "where p.id= (select persona_id from cliente where id = :id)";
+                $query = $conn->prepare($sql);
                 $query->execute(array(':ape_nom' => $args['ape_nom'],
-                    ':dni' => $args['dni'],
                     ':domicilio' => $args['domicilio'],
                     ':telefono' => $args['telefono'],
                     ':email' => $args['email'],
-                    ':juridica' => $args['juridica'],
-                    ':cuit' => $args['cuit'],
                     ':id' => $id
                     ));
                 $conn->commit();

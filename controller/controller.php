@@ -50,14 +50,20 @@
 			}
 
 	}elseif(!empty($_POST['formulario']) && $_POST['formulario'] == 'modifica'){
-                        $usuario  	= $_SESSION['usuario'];
-			$password 	= $_SESSION['pass'];
-			$apellido	= $_POST['apellido'];
-			$nombre		= $_POST['nombre'];
-			$edad		= $_POST['edad'];
-                        $id             = $_POST['id'];
+                        $user                   = unserialize($_SESSION['usuario']);
+			$args['usuario']	= $user->user;
+			$args['password'] 	= $user->pass;
+			$args['ape_nom']	= $_POST['ape_nom'];
+			$args['dni']		= isset($_POST['dni']) ? $_POST['dni'] : "";
+			$args['domicilio']	= $_POST['domicilio'];
+                        $args['telefono']       = $_POST['telefono'];
+                        $args['email']          = $_POST['email'];
+                        $args['juridica']       = $_POST['juridica'];
+                        $args['cuit']           = $_POST['cuit'];
+                        $args['id']             = $_POST['id'];
+
                         
-                        $estado = update_cliente($id,$apellido,$nombre,$edad,$usuario,$password);
+                        $estado = update_cliente($args);
                         
                         if($estado == 1){
 				$cliente = obtener_cliente($id, $usuario, $password);
@@ -95,18 +101,34 @@
                         die();
                     }
 		}elseif($_GET['op'] == 'nuevo'){
+                    if($usuario->rol =='empleado'){
 			$_SESSION['archivo'] = "nuevo.php";
 			header( "Location: ../index.php");
 			die(); 
+                    }else{
+                        header( "Location: controller.php?op=salir");
+                        session_destroy();
+                        die();
+                    }
 
 		}elseif($_GET['op'] == 'edit' ){
-                    $id = $_GET['row'];
-                    $usuario = $_SESSION['usuario'];
-                    $password= $_SESSION['pass'];
-                    $cliente = obtener_cliente($id, $usuario, $password);
-                    $_SESSION['archivo'] = "edita_cliente.php";
-                    $_SESSION['cliente'] = $cliente;
-                    header("Location: ../index.php");
+                    $args['id'] = $_GET['row'];
+                    $args['usuario'] = $usuario->user;
+                    $args['password'] = $usuario->pass;
+                    if($usuario->rol =='empleado'){
+                        $cliente = obtener_cliente($args);
+                        $_SESSION['archivo'] = "edita_cliente.php";
+                        $_SESSION['cliente'] = serialize($cliente);
+                        header("Location: ../index.php");
+                        die();
+                    
+                    }else{
+                        header( "Location: controller.php?op=salir");
+                        session_destroy();
+                        die();
+                    }
+                    
+                    
                     
                 }elseif($_GET['op'] == 'remove' ){
                     $id = $_GET['row'];

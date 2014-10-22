@@ -1,5 +1,5 @@
 <?php if(isset($_SESSION['cliente'])){
-    $cliente = $_SESSION['cliente'];
+    $cliente = unserialize($_SESSION['cliente']);
 }
 ?>
 <div class="row clearfix">
@@ -20,25 +20,35 @@
         <form role="form" method="POST" action = "controller/controller.php">
 
             <input type="hidden" name="formulario" value="modifica">
-            <input type="hidden" name="id" value="<?php echo $cliente['id'] ?>">
+            <input type="hidden" name="id" value="<?php echo $cliente->id ?>">
             <div class="form-group">
-                <label for="Apellido">Apellido</label><input type="text" class="form-control" name="apellido" value="<?php echo $cliente['apellido'] ?>" required />
+                <label for="ape_nom">Apellido y nombre / razon social</label><input type="text" class="form-control" name="ape_nom" id="ape_nom" value="<?php echo $cliente->ape_nom ?>" required />
             </div>
             <div class="form-group">
-                <label for="nombre">Nombre</label><input type="text" class="form-control" name="nombre" value="<?php echo $cliente['nombre'] ?>" required />
-            </div>
-            <div class="form-group">
-                <label for="edad">Edad</label><select  class="form-control" name="edad">
-                    <option value="">Seleccione Edad</option>
-                    <?php for ($i = 1; $i < 100; $i++) : ?>
-                        <?php if($i == $cliente['edad']): ?>
-                            <option value="<?php echo $i ?>" selected="selected"><?php echo $i ?></option>
+                <label for="nombre">Es persona Juridica?</label> <select class="form-control" id="juridica" name="juridica" readonly="readonly">
+                    <?php for ($i = 0; $i < 2; $i++): ?>
+                        <?php if ($i == $cliente->juridica): ?>
+                            <option value="<?php echo $i ?>" selected="selected"><?php echo ($i == 0) ? 'no' : 'si' ?></option>
                         <?php else: ?>
-                            <option value="<?php echo $i ?>" ><?php echo $i ?></option>
+                            <option value="<?php echo $i ?>" ><?php echo ($i == 0) ? 'no' : 'si' ?></option>
                         <?php endif; ?>
                     <?php endfor; ?>
                 </select>
             </div>
+            
+            <div class="form-group">
+                <label for="<?php echo ($cliente->juridica == 0) ? 'dni' : 'cuit'; ?>"><?php echo ($cliente->juridica == 0) ? 'DNI' : 'CUIT'; ?></label><input type="text" class="form-control" name="<?php echo ($cliente->juridica == 0) ? 'dni' : 'cuit'; ?>" id="<?php echo ($cliente->juridica == 0) ? 'dni' : 'cuit'; ?>" value="<?php echo ($cliente->juridica == 0) ? $cliente->dni : $cliente->cuit ?>" required readonly="readonly"/>
+            </div>
+            <div class="form-group">
+                <label for="domicilio">Domicilio</label><input type="text" class="form-control" name="domicilio" id="domicilio" value="<?php echo $cliente->domicilio ?>" required />
+            </div>
+            <div class="form-group">
+                <label for="telefono">Telefono</label><input type="number" class="form-control" name="telefono" id="telefono" value="<?php echo $cliente->telefono ?>" />
+            </div>
+            <div class="form-group">
+                <label for="email">Correo electronico</label><input type="email" class="form-control" name="email" id="email" value="<?php echo $cliente->email ?>"/>
+            </div>
+            
     <button type="submit" class="btn btn-success pull-right">Modificar</button>
 </form>
 </div>

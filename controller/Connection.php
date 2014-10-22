@@ -3,7 +3,9 @@
 	require_once("../classes/Usuario.php");
 	class Connection
 	{
-		private static function getDbConnection()
+                public static $CONN;
+
+                private static function getDbConnection()
 		{
 			$conn = new ConfigBD();
 			error_reporting(E_ALL);//notifica de todos los errores
@@ -46,6 +48,7 @@
                                     unset($_SESSION['usuario']);
                                 }
 		            	$_SESSION['usuario'] = serialize($usuario);
+                                Connection::$CONN = $conn;
 		            	return $conn;
 		            }
 		        }catch (PDOException $e) {

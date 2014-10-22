@@ -12,7 +12,7 @@ function cliente_save($args) {
                 $idPersona = persona_save($args);
                 $sql = "INSERT INTO cliente(persona_id) values(:persona)";
                 $query = $conn->prepare($sql);
-                $query->execute(array(':ape_nom' => $idPersona));
+                $query->execute(array(':persona' => $idPersona));
                 $conn->commit();
                 return 1;
             } catch (PDOException $e) {
@@ -93,7 +93,9 @@ function get_clientes($usuario, $password) {
     $conn = Connection::userConnection($usuario, $password);
     if ($conn !== false) {
         try {
-            $sql = "SELECT * FROM persona where id in (select persona_id from cliente)";
+            $sql = "select c.id as id, p.ape_nom as ape_nom, p.dni as dni, p.domicilio as domicilio, "
+                    . "p.telefono as telefono, p.email as email, p.juridica as juridica, p.cuit as cuit "
+                    . "from cliente c join persona p on c.persona_id =  p.id";
 
             $stmt = $conn->prepare($sql);
             $stmt->setFetchMode(PDO::FETCH_ASSOC);
@@ -106,15 +108,18 @@ function get_clientes($usuario, $password) {
     }
 }
 
-function get_cliente_by_id($id, $usuario, $password) {
-    $coneccion = get_conection($usuario, $password);
+function get_cliente_by_id($args) {
+    $coneccion = Connection::userConnection($args['usuario'], $args['password']);
     if ($coneccion !== false) {
         try {
-            $sql = "SELECT * FROM clientes WHERE id = :id";
+            $sql = "select c.id as id, p.ape_nom as ape_nom, p.dni as dni, p.domicilio as domicilio, "
+                    . "p.telefono as telefono, p.email as email, p.juridica as juridica, p.cuit as cuit "
+                    . "from cliente c join persona p on c.persona_id =  p.id "
+                    . "where c.id = :id";
 
             $stmt = $coneccion->prepare($sql);
-            $stmt->setFetchMode(PDO::FETCH_ASSOC);
-            $stmt->bindParam(':id', $id);
+            $stmt->setFetchMode(PDO::FETCH_OBJ);
+            $stmt->bindParam(':id', $args['id']);
             $stmt->execute();
             $results = $stmt->fetch();
             return $results;
@@ -144,21 +149,12 @@ function del_cliente_by_id($id, $usuario, $password) {
     }
 }
 
-function update_cliente_id($id, $apellido, $nombre, $edad, $usuario, $password){
-        $coneccion = get_conection($usuario, $password);
-        if(coneccion !== false){
+function update_cliente_id($args){
+        $coneccion = Connection::userConnection($args['usuario'], $args['password']);
+        if($coneccion !== false){
         try {
-                $coneccion->beginTransaction();
-                $sql = "UPDATE clientes set apellido=:apellido, nombre=:nombre,edad=:edad where id=:id";
-                $query = $coneccion->prepare($sql);
-                $query->execute(array(':apellido' => $apellido,
-                    ':nombre' => $nombre,
-                    ':edad' => $edad,
-                    ':id' => $id));
-                $coneccion->commit();
-                return 1;
+                return persona_save($args);
             } catch (PDOException $e) {
-                $coneccion->rollBack();
                 return 0;
             }
         }
