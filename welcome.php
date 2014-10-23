@@ -5,6 +5,7 @@
 	}
 	if(isset($_SESSION['usuario'])){
 		$usuario = unserialize($_SESSION['usuario']);
+                //$usuario = new classes\Usuario($usuario['id'],$usuario['user'],$usuario['pass'],$usuario['rol']);
 	}
 	if(isset($_SESSION['session_begin']) && $_SESSION['session_begin'] !=""){
 		$session_begin = $_SESSION['session_begin'];
@@ -56,7 +57,7 @@
 					<ul class="nav navbar-nav">
 						
 						<li class="dropdown">
-                                                    <?php if($usuario->rol== 'cliente' ): ?>
+                                                    <?php if($usuario->getRol() == 'cliente' ): ?>
 							 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Clientes<strong class="caret"></strong></a>
 							<ul class="dropdown-menu">
 								<li>
@@ -89,7 +90,7 @@
 					
 					<ul class="nav navbar-nav navbar-right">
 						<li class="dropdown">
-							 <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-user"></i><?php echo $usuario->user ?><strong class="caret"></strong></a>
+							 <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-user"></i><?php echo $usuario->getUser() ?><strong class="caret"></strong></a>
 							<ul class="dropdown-menu">
 								<li>
 									<a href="controller/controller.php?op=salir">Salir</a>
@@ -111,8 +112,9 @@
 	
 	 	<?php include $archivo; ?>
 
-	<?php else: ?>		
-	 	   <h3> Bienvenido <?php echo $usuario->user ?> <small>iniciaste session el: <?php echo $session_begin ?></small></h3>
+	<?php else: ?>	
+            <?php var_dump($usuario) ?>
+	 	   <h3> Bienvenido <?php echo $usuario->getUser() ?> <small>iniciaste session el: <?php echo $session_begin ?></small></h3>
 	<?php endif; ?>
 </div>
 </body>

@@ -37,10 +37,11 @@
 		        try {
 		            $sql = "SELECT id,user,pass,rol FROM usuario WHERE user = :usuario and pass = :password";
 		            $stmt = $conn->prepare($sql);
-		            $stmt->setFetchMode(PDO::FETCH_OBJ);
+		            $stmt->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE,'classes\Usuario');
 		            $stmt->bindParam(':usuario', $usuario);
 		            $stmt->bindParam(':password', $password);
 		            $stmt->execute();
+                            //$usuario = new classes\Usuario();
 		            $usuario =  $stmt->fetch();
 		            //$user = Usuario $usuario;
 

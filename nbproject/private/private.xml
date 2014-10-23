@@ -4,18 +4,20 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/home/jaime/php/TP1PWII-Reparacion/negocio/equipo.php</file>
-            <file>file:/home/jaime/php/TP1PWII-Reparacion/edita_cliente.php</file>
             <file>file:/home/jaime/php/TP1PWII-Reparacion/dao/equipoDAO.php</file>
-            <file>file:/home/jaime/php/TP1PWII-Reparacion/negocio/tipo_equipo.php</file>
+            <file>file:/home/jaime/php/TP1PWII-Reparacion/edita_cliente.php</file>
+            <file>file:/home/jaime/php/TP1PWII-Reparacion/controller/ConfigBD.php</file>
             <file>file:/home/jaime/php/TP1PWII-Reparacion/dao/tipo_equipoDAO.php</file>
-            <file>file:/home/jaime/php/TP1PWII-Reparacion/listado_equipo.php</file>
-            <file>file:/home/jaime/php/TP1PWII-Reparacion/welcome.php</file>
             <file>file:/home/jaime/php/TP1PWII-Reparacion/edit_equipo.php</file>
             <file>file:/home/jaime/php/TP1PWII-Reparacion/index.php</file>
+            <file>file:/home/jaime/php/TP1PWII-Reparacion/negocio/tipo_equipo.php</file>
+            <file>file:/home/jaime/php/TP1PWII-Reparacion/listado_equipo.php</file>
+            <file>file:/home/jaime/php/TP1PWII-Reparacion/welcome.php</file>
+            <file>file:/home/jaime/php/TP1PWII-Reparacion/classes/Usuario.php</file>
             <file>file:/home/jaime/php/TP1PWII-Reparacion/controller/Connection.php</file>
             <file>file:/home/jaime/php/TP1PWII-Reparacion/dao/clienteDAO.php</file>
-            <file>file:/home/jaime/php/TP1PWII-Reparacion/negocio/cliente.php</file>
             <file>file:/home/jaime/php/TP1PWII-Reparacion/controller/controller.php</file>
+            <file>file:/home/jaime/php/TP1PWII-Reparacion/negocio/cliente.php</file>
         </group>
     </open-files>
 </project-private>
