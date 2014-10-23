@@ -4,7 +4,7 @@
     }
 
     if(empty($session_begin)){
-        require_once('login.php');
+        require_once('public/login.php');
     }else{
-        require_once('welcome.php');
+        require_once('public/welcome.php');
     }
