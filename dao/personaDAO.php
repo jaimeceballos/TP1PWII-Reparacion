@@ -3,7 +3,11 @@ require_once("../controller/Connection.php");
     
 function persona_save($args) {
     
-    $conn = Connection::userConnection($args['usuario'], $args['password']);
+    //$conn = Connection::userConnection($args['usuario'], $args['password']);
+     $conn = Connection::getConn();
+    if(!$conn){
+        $conn = Connection::userConnection($args['usuario'], $args['password']);
+    }
     if ($conn !== false) {
         if(!empty($args['id'])){
             $id = $args['id'];
@@ -32,7 +36,7 @@ function persona_save($args) {
             }
         } elseif ($id > 0) {
             try {
-                $conn->beginTransaction();
+                //$conn->beginTransaction();
                 $sql = "UPDATE persona p set p.ape_nom=:ape_nom, "
                         . "p.domicilio=:domicilio, p.telefono=:telefono, p.email=:email "
                         . "where p.id= (select persona_id from cliente where id = :id)";
@@ -43,10 +47,10 @@ function persona_save($args) {
                     ':email' => $args['email'],
                     ':id' => $id
                     ));
-                $conn->commit();
+                //$conn->commit();
                 return persona_exist($args);
             } catch (PDOException $e) {
-                $conn->rollBack();
+               // $conn->rollBack();
                 return 0;
             }
         }
@@ -55,7 +59,13 @@ function persona_save($args) {
 }
 
 function persona_exist($args) {
-    $coneccion = Connection::userConnection($args['usuario'], $args['password']);
+    
+    //$coneccion = Connection::userConnection($args['usuario'], $args['password']);
+    
+     $coneccion = Connection::getConn();
+    if(!$coneccion){
+        $coneccion = Connection::userConnection($args['usuario'], $args['password']);
+    }
     if ($coneccion !== false) {
         if($args['juridica'] == 0){
             try {

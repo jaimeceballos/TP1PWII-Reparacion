@@ -2,8 +2,10 @@
 require_once("../controller/Connection.php");
 require_once('personaDAO.php');    
 function cliente_save($args) {
-    
-    $conn = Connection::userConnection($args['usuario'], $args['password']);
+    $conn = Connection::getConn();
+    if(!$conn){
+        $conn = Connection::userConnection($args['usuario'], $args['password']);
+    }
     if ($conn !== false) {
         $id = cliente_exist($args);
         if ($id === false) {
@@ -45,7 +47,11 @@ function cliente_save($args) {
 }
 
 function cliente_exist($args) {
-    $coneccion = Connection::userConnection($args['usuario'], $args['password']);
+   // $coneccion = Connection::userConnection($args['usuario'], $args['password']);
+     $coneccion = Connection::getConn();
+    if(!$coneccion){
+        $coneccion = Connection::userConnection($args['usuario'], $args['password']);
+    }
     if ($coneccion !== false) {
         if($args['juridica'] == 0){
             try {
@@ -90,7 +96,11 @@ function cliente_exist($args) {
 }
 
 function get_clientes($usuario, $password) {
-    $conn = Connection::userConnection($usuario, $password);
+    //$conn = Connection::userConnection($usuario, $password);
+     $conn = Connection::getConn();
+    if(!$conn){
+        $conn = Connection::userConnection($usuario, $password);
+    }
     if ($conn !== false) {
         try {
             $sql = "select c.id as id, p.ape_nom as ape_nom, p.dni as dni, p.domicilio as domicilio, "
@@ -109,7 +119,13 @@ function get_clientes($usuario, $password) {
 }
 
 function get_cliente_by_id($args) {
-    $coneccion = Connection::userConnection($args['usuario'], $args['password']);
+    
+    //$coneccion = Connection::userConnection($args['usuario'], $args['password']);
+    
+     $coneccion = Connection::getConn();
+    if(!$coneccion){
+        $coneccion = Connection::userConnection($args['usuario'], $args['password']);
+    }
     if ($coneccion !== false) {
         try {
             $sql = "select c.id as id, p.ape_nom as ape_nom, p.dni as dni, p.domicilio as domicilio, "

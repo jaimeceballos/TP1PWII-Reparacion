@@ -45,7 +45,7 @@
 								</td>
                                                                 <td>
 									<a href="controller/controller.php?op=edit_equipo&row=<?php echo $fila['id'] ?>"> <i class="glyphicon glyphicon-edit"></i> </a>
-                                                                        <a href="controller/controller.php?op=remove&row=<?php echo $fila['id'] ?>" onclick="return confirm('realmente desea eliminar este cliente?');"> <i class="glyphicon glyphicon-trash"></i> </a>
+                                                                        <a href="controller/controller.php?op=remove_equipo&row=<?php echo $fila['id'] ?>" onclick="return confirm('realmente desea eliminar este cliente?');"> <i class="glyphicon glyphicon-trash"></i> </a>
 								</td>
 							</tr>
 						<?php endforeach; ?>

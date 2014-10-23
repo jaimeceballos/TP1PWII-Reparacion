@@ -28,8 +28,8 @@
 			
 	}elseif(!empty($_POST['formulario']) && $_POST['formulario'] == 'nuevo'){
                         $user                   = unserialize($_SESSION['usuario']);
-			$args['usuario']	= $user->user;
-			$args['password'] 	= $user->pass;
+			$args['usuario']	= $user->getUser();
+			$args['password'] 	= $user->getPass();
 			$args['ape_nom']	= $_POST['ape_nom'];
 			$args['dni']		= $_POST['dni'];
 			$args['domicilio']	= $_POST['domicilio'];
@@ -53,8 +53,8 @@
 
 	}elseif(!empty($_POST['formulario']) && $_POST['formulario'] == 'modifica'){
                         $user                   = unserialize($_SESSION['usuario']);
-			$args['usuario']	= $user->user;
-			$args['password'] 	= $user->pass;
+			$args['usuario']	= $user->getUser();
+			$args['password'] 	= $user->getPass();
 			$args['ape_nom']	= $_POST['ape_nom'];
 			$args['dni']		= isset($_POST['dni']) ? $_POST['dni'] : "";
 			$args['domicilio']	= $_POST['domicilio'];
@@ -83,8 +83,8 @@
                         
         }elseif(!empty($_POST['formulario']) && $_POST['formulario'] == 'nuevo_equipo'){
                          $user                          = unserialize($_SESSION['usuario']);
-                         $args['usuario']               = $user->user;
-                         $args['password']              = $user->pass;
+                         $args['usuario']               = $user->getUser();
+                         $args['password']              = $user->getPass();
                          $args['tipo_equipo_id']        = $_POST['tipo_equipo_id'];
                          $args['cliente_id']            = $_POST['cliente_id'];
                          $args['descripcion_equipo']    = $_POST['descripcion_equipo'];
@@ -93,17 +93,48 @@
                          $estado = alta_equipo($args);
                          
                          if($estado == 1){
-                               $_SESSION['tipos_equipo'] = listar_tipos_equipo($usuario->user, $usuario->pass);
+                               $_SESSION['tipos_equipo'] = listar_tipos_equipo($usuario->getUser(), $usuario->getPass());
                                $_SESSION['clientes']     = listar_clientes($usuario, $password);
                                $_SESSION['archivo'] = "nuevo_equipo.php";
                                header( "Location: ../index.php?conf=ok");
                          }else{
-                               $_SESSION['tipos_equipo'] = listar_tipos_equipo($usuario->user, $usuario->pass);
+                               $_SESSION['tipos_equipo'] = listar_tipos_equipo($usuario->getUser(), $usuario->getPass());
                                $_SESSION['clientes']     = listar_clientes($usuario, $password);
                                $_SESSION['archivo'] = "nuevo_equipo.php";
                                header( "Location: ../index.php?err=no se pudo guardar.");
                          }
              
+        }elseif(!empty($_POST['formulario']) && $_POST['formulario'] == 'edit_equipo'){
+                        $user                           = unserialize($_SESSION['usuario']);
+			$args['usuario']                = $user->getUser();
+			$args['password']               = $user->getPass();
+			$args['tipo_equipo_id']         = $_POST['tipo_equipo_id'];
+			$args['cliente_id']             = $_POST['cliente_id'];
+			$args['descripcion_equipo']	= $_POST['descripcion_equipo'];
+                        $args['estado_general']         = $_POST['estado_general'];
+                        $args['id']                     = $_POST['id'];
+
+                        
+                        $estado = update_equipo($args);
+                        
+                        if($estado >= 1){
+				$equipo = obtener_equipo($args);
+                                $_SESSION['tipos_equipo'] = listar_tipos_equipo($usuario->getUser(), $usuario->getPass());
+                                $_SESSION['clientes']     = listar_clientes($usuario, $password);
+                                $_SESSION['archivo'] = "edit_equipo.php";
+                                $_SESSION['equipo'] = serialize($equipo);
+				header( "Location: ../index.php?conf=ok");
+				die(); 				
+			}else{
+				$equipo = obtener_equipo($args);
+                                $_SESSION['tipos_equipo'] = listar_tipos_equipo($usuario->getUser(), $usuario->getPass());
+                                $_SESSION['clientes']     = listar_clientes($usuario, $password);
+                                $_SESSION['archivo'] = "edit_equipo.php";
+                                $_SESSION['equipo'] = $equipo;
+				header( "Location: ../index.php?err=no se pudo guardar");
+				die();
+			}
+                        
         }
 
 	if(!empty($_GET['op'])){
@@ -113,9 +144,9 @@
 			die(); 
 		}elseif($_GET['op'] == 'abm_Cliente'){
 
-                    if($usuario->rol=='empleado'){
+                    if($usuario->getRol()=='empleado'){
 
-                        $results = listar_clientes($usuario->user,$usuario->pass);
+                        $results = listar_clientes($usuario->getUser(),$usuario->getPass());
                         $_SESSION['archivo'] = "listado.php";
                         $_SESSION['listado'] = $results;
                         header( "Location: ../index.php");
@@ -126,7 +157,7 @@
                         die();
                     }
 		}elseif($_GET['op'] == 'nuevo'){
-                    if($usuario->rol =='empleado'){
+                    if($usuario->getRol() =='empleado'){
 			$_SESSION['archivo'] = "nuevo.php";
 			header( "Location: ../index.php");
 			die(); 
@@ -138,9 +169,9 @@
 
 		}elseif($_GET['op'] == 'edit' ){
                     $args['id'] = $_GET['row'];
-                    $args['usuario'] = $usuario->user;
-                    $args['password'] = $usuario->pass;
-                    if($usuario->rol =='empleado'){
+                    $args['usuario'] = $usuario->getUser();
+                    $args['password'] = $usuario->getPass();
+                    if($usuario->getRol() =='empleado'){
                         $cliente = obtener_cliente($args);
                         $_SESSION['archivo'] = "edita_cliente.php";
                         $_SESSION['cliente'] = serialize($cliente);
@@ -157,9 +188,9 @@
                     
                 }elseif($_GET['op'] == 'remove' ){
                     $args['id'] = $_GET['row'];
-                    $args['usuario'] = $usuario->user;
-                    $args['password']= $usuario->pass;
-                    if($usuario->rol =='empleado'){
+                    $args['usuario'] = $usuario->getUser();
+                    $args['password']= $usuario->getPass();
+                    if($usuario->getRol() =='empleado'){
                         $cliente = borrar_cliente($args);
                         $results = listar_clientes($usuario, $password);
                         $_SESSION['archivo'] = "listado.php";
@@ -179,9 +210,9 @@
                     header("Location: ../index.php");
                     die();
                 }elseif($_GET['op'] == 'abm_equipo'){
-                    if($usuario->rol=='empleado'){
+                    if($usuario->getRol()=='empleado'){
 
-                        $results = listar_equipos($usuario->user,$usuario->pass);
+                        $results = listar_equipos($usuario->getUser(),$usuario->getPass());
                         $_SESSION['archivo'] = "listado_equipo.php";
                         $_SESSION['listado'] = $results;
                         header( "Location: ../index.php");
@@ -192,8 +223,8 @@
                         die();
                     }
                 }elseif ($_GET['op'] == 'alta_equipo'){
-                    if($usuario->rol=='empleado'){
-                        $_SESSION['tipos_equipo'] = listar_tipos_equipo($usuario->user, $usuario->pass);
+                    if($usuario->getRol()=='empleado'){
+                        $_SESSION['tipos_equipo'] = listar_tipos_equipo($usuario->getUser(), $usuario->getPass());
                         $_SESSION['clientes']     = listar_clientes($usuario, $password);
                         $_SESSION['archivo'] = "nuevo_equipo.php";
 			header( "Location: ../index.php");
@@ -205,11 +236,11 @@
                     }
                 }elseif($_GET['op'] == 'edit_equipo' ){
                     $args['id'] = $_GET['row'];
-                    $args['usuario'] = $usuario->user;
-                    $args['password'] = $usuario->pass;
-                    if($usuario->rol =='empleado'){
+                    $args['usuario'] = $usuario->getUser();
+                    $args['password'] = $usuario->getPass();
+                    if($usuario->getRol() =='empleado'){
                         
-                        $_SESSION['tipos_equipo'] = listar_tipos_equipo($usuario->user, $usuario->pass);
+                        $_SESSION['tipos_equipo'] = listar_tipos_equipo($usuario->getUser(), $usuario->getPass());
                         $_SESSION['clientes']     = listar_clientes($usuario, $password);
                         $_SESSION['archivo'] = "edit_equipo.php";
 			
@@ -218,6 +249,22 @@
                         header("Location: ../index.php");
                         die();
                     
+                    }else{
+                        header( "Location: controller.php?op=salir");
+                        session_destroy();
+                        die();
+                    }
+                }elseif($_GET['op'] == 'remove_equipo' ){
+                    $args['id'] = $_GET['row'];
+                    $args['usuario'] = $usuario->getUser();
+                    $args['password']= $usuario->getPass();
+                    if($usuario->getRol() =='empleado'){
+                        $equipo = borrar_equipo($args);
+                        $results = listar_equipos($usuario->getUser(),$usuario->getPass());
+                        $_SESSION['archivo'] = "listado_equipo.php";
+                        $_SESSION['listado'] = $results;
+                        header( "Location: ../index.php");
+                        die();
                     }else{
                         header( "Location: controller.php?op=salir");
                         session_destroy();
@@ -252,3 +299,5 @@
             header("Location: ../index.php");
             die();
         }
+        header("Location: ../404.php");
+        die();

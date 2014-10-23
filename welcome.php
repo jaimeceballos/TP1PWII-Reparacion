@@ -42,7 +42,7 @@
         }
 	</style>
 </head>
-
+<?php if(empty($_SESSION['404'])): ?>
 <body class="body">
 	<div class="container">
 	<div class="row clearfix">
@@ -118,5 +118,10 @@
 	<?php endif; ?>
 </div>
 </body>
-
+<?php else: ?>
+    <body>
+        <?php include '404.php' ?>
+        
+    </body>
+<?php endif; ?>
 </html>

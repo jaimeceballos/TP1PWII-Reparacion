@@ -6,7 +6,8 @@
 ?>
 
 <div class="row clearfix">
-
+    <h1>Editar Equipo</h1>
+    <hr>
     <div class="col-md-12 column">
         <?php if (isset($conf)): ?>
             <div class="alert alert-dismissable alert-info">

@@ -4,6 +4,10 @@
 	class Connection
 	{
                 private static $CONN;
+                
+                public static function getConn(){
+                    return Connection::$CONN;
+                }
 
                 private static function getDbConnection()
 		{
@@ -29,9 +33,9 @@
 		}
 		public static function userConnection($usuario,$password){
                     
-                    if (Connection::$CONN){
+                    /*if (Connection::$CONN){
                         return Connection::$CONN;
-                    }else{
+                    }else{*/
                         $conn = Connection::getDbConnection();
 			if ($conn !== false) {
 		        try {
@@ -60,7 +64,7 @@
 		            return false;
 		        }
                        }
-                    }
+                    //}
 					
 		}
 	}	
