@@ -80,7 +80,7 @@
 									<a href="controller/controller.php?op=abm_equipo">Alta de Equipo</a>
 								</li>
 								<li>
-                                                                    <a href="controller/controller.php?op=buscar_form">Nueva orden de trabajo</a>
+                                                                    <a href="controller/controller.php?op=abm_orden">Nueva orden de trabajo</a>
 								</li>
 							</ul>
                                                          

@@ -4,6 +4,7 @@
         require_once('../negocio/cliente.php');
         require_once('../negocio/equipo.php');
         require_once('../negocio/tipo_equipo.php');
+        require_once('../negocio/orden.php');
         if(isset($_SESSION['usuario'])){
             $usuario = unserialize($_SESSION['usuario']);
         }
@@ -262,6 +263,20 @@
                         $equipo = borrar_equipo($args);
                         $results = listar_equipos($usuario->getUser(),$usuario->getPass());
                         $_SESSION['archivo'] = "listado_equipo.php";
+                        $_SESSION['listado'] = $results;
+                        header( "Location: ../index.php");
+                        die();
+                    }else{
+                        header( "Location: controller.php?op=salir");
+                        session_destroy();
+                        die();
+                    }
+                }elseif($_GET['op'] == 'abm_orden'){
+                    if($usuario->getRol()=='empleado'){
+                        $args['usuario'] = $usuario->getUser();
+                        $args['password'] = $usuario->getPass();
+                        $results = listar_orden($args);
+                        $_SESSION['archivo'] = "listado_orden.php";
                         $_SESSION['listado'] = $results;
                         header( "Location: ../index.php");
                         die();
