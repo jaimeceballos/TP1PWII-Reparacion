@@ -3,6 +3,9 @@
 ?>
 
 <div class="row clearfix">
+    
+    <?php $_SESSION['usu'] = $usuario->getUser() ?>" />
+    <?php $_SESSION['password'] = $usuario->getPass() ?>
     <h1>Nueva orden</h1>
     <hr>
     <div class="col-md-12 column">
@@ -36,6 +39,12 @@
                     <?php foreach ($tipos_orden as $tipo): ?>
                         <option value="<?php echo $tipo['id'] ?>"><?php echo $tipo['descripcion'] ?></option>
                     <?php endforeach; ?>
+                </select>
+            </div>
+            <div class="form-group">
+              <label for="equipo">Cliente</label>
+                <select multiple class="form-control" name="equipo" id="equipo" required>
+                    <option value="">Seleccione un cliente</option>
                 </select>
             </div>
             <div class="form-group">

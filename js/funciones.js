@@ -11,7 +11,22 @@ $(document).ready(function(){
           $('#cuit').attr("required","required");
           $('#divcuit').fadeIn('slow');
       }
-    }); 
+    });
+   $("#cliente_id").change(function(){
+      if($("#cliente_id").val() != ""){
+          var miselect=$("#equipo");
+          //miselect.find('option').remove().val('');
+          $.post("negocio/equipo_cliente_json.php",{cliente:$("#cliente_id").val()},
+                function(data) {
+                    alert('VIENE');
+                        miselect.empty();
+                        for (var i=0; i<data.length; i++) {
+                                miselect.append('<option value="' + data[i].id + '">' + data[i].descripcion_equipo + '</option>');
+                        }
+                 }, "json"
+             );
+      }
+   });
 });
 
 
