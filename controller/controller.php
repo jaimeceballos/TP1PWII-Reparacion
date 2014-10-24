@@ -5,6 +5,7 @@
         require_once('../negocio/equipo.php');
         require_once('../negocio/tipo_equipo.php');
         require_once('../negocio/orden.php');
+        require_once('../negocio/tipo_orden.php');
         if(isset($_SESSION['usuario'])){
             $usuario = unserialize($_SESSION['usuario']);
         }
@@ -285,6 +286,23 @@
                         session_destroy();
                         die();
                     }
+                }elseif($_GET['op'] == 'alta_orden'){
+                    if($usuario->getRol()=='empleado'){
+                        $args['usuario'] = $usuario->getUser();
+                        $args['password'] = $usuario->getPass();
+                        
+                        $_SESSION['tipos_orden'] = listar_tipos_orden($args);
+                        $_SESSION['clientes']     = listar_clientes($usuario->getUser(), $usuario->getPass());
+                        
+                        $_SESSION['archivo'] = "nuevo_orden.php";
+                        $_SESSION['listado'] = $results;
+                        header( "Location: ../index.php");
+                        die();
+                    }else{
+                        header( "Location: controller.php?op=salir");
+                        session_destroy();
+                        die();
+                    }
                 }
 		
 	}
@@ -314,5 +332,5 @@
             header("Location: ../index.php");
             die();
         }
-        header("Location: ../404.php");
+        header("Location: ../public/404.php");
         die();
