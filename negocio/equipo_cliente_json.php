@@ -1,12 +1,12 @@
 <?php
     session_start();
     require_once '../controller/Connection.php';
+    
+    $cliente = $_GET['cliente'];
+    $usuario    = unserialize($_SESSION['usuario']);
     $conn = Connection::getConn();
-    $cliente = $_POST['cliente'];
-    $usuario = $_SESSION['usu'];
-    $password = $_SESSION['password'];
     if(!$conn){
-        $conn = Connection::userConnection($usuario, $password);
+        $conn = Connection::userConnection($usuario->getUser(), $usuario->getPass());
     }
     if($conn){
             try {
@@ -18,7 +18,7 @@
                     $stmt->execute();
                     $results = $stmt->fetchAll();
                     $results = json_encode($results);
-                    return $results;
+                    echo $results;
             } catch (PDOException $e) {
                     return -1;
             }

@@ -15,17 +15,31 @@ $(document).ready(function(){
    $("#cliente_id").change(function(){
       if($("#cliente_id").val() != ""){
           var miselect=$("#equipo");
-          //miselect.find('option').remove().val('');
-          $.post("negocio/equipo_cliente_json.php",{cliente:$("#cliente_id").val()},
-                function(data) {
-                    alert('VIENE');
-                        miselect.empty();
-                        for (var i=0; i<data.length; i++) {
-                                miselect.append('<option value="' + data[i].id + '">' + data[i].descripcion_equipo + '</option>');
-                        }
-                 }, "json"
-             );
+         $.get("negocio/equipo_cliente_json.php?cliente="+$("#cliente_id").val(), function(data){
+             miselect.empty();
+             if(data.length > 0){
+                for (var i=0; i<data.length; i++) {
+                    miselect.append('<option value="' + data[i].id + '">' + data[i].descripcion_equipo + '</option>');
+                    miselect.removeAttr("disabled");
+                    $("#nuevo").fadeOut();
+                }
+             }else{
+                 miselect.find('option').remove().end().append('<option value="">No hay equipos para este cliente</option>').val('');
+                 miselect.attr('disabled', 'disabled');
+                 $("#nuevo").fadeIn();
+                 $("#guardar").attr("disabled","disabled");
+             }
+         },"json");
+      }else{
+                 var miselect=$("#equipo");
+                 miselect.find('option').remove().end().append('<option value="">Seleccione un cliente</option>');
+                 miselect.attr('disabled', 'disabled');
+                 $("#nuevo").fadeOut();
+                 $("#guardar").attr("disabled","disabled");
       }
+   });
+   $("#equipo").change(function(){
+       $("#guardar").removeAttr("disabled");
    });
 });
 

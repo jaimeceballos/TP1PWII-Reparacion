@@ -110,14 +110,15 @@
                         $user                           = unserialize($_SESSION['usuario']);
 			$args['usuario']                = $user->getUser();
 			$args['password']               = $user->getPass();
-			$args['tipo_equipo_id']         = $_POST['tipo_equipo_id'];
+                        $args['empleado']               = $user->getId();
 			$args['cliente_id']             = $_POST['cliente_id'];
-			$args['descripcion_equipo']	= $_POST['descripcion_equipo'];
-                        $args['estado_general']         = $_POST['estado_general'];
-                        $args['id']                     = $_POST['id'];
+			$args['tipo_orden_id']          = $_POST['tipo_orden_id'];
+			$args['equipo']         	= $_POST['equipo'];
+                        $args['descripcion_falla']      = $_POST['descripcion_falla'];
+                        
 
                         
-                        $estado = update_equipo($args);
+                        $estado = alta_orden($args);
                         
                         if($estado >= 1){
 				$equipo = obtener_equipo($args);
@@ -137,6 +138,8 @@
 				die();
 			}
                         
+        }elseif(!empty($_POST['formulario']) && $_POST['formulario'] == 'nueva_orden'){
+            
         }
 
 	if(!empty($_GET['op'])){

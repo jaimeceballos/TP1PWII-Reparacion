@@ -4,8 +4,7 @@
 
 <div class="row clearfix">
     
-    <?php $_SESSION['usu'] = $usuario->getUser() ?>" />
-    <?php $_SESSION['password'] = $usuario->getPass() ?>
+   
     <h1>Nueva orden</h1>
     <hr>
     <div class="col-md-12 column">
@@ -42,17 +41,19 @@
                 </select>
             </div>
             <div class="form-group">
-              <label for="equipo">Cliente</label>
-                <select multiple class="form-control" name="equipo" id="equipo" required>
+              <label for="equipo">Equipo</label>
+                <select multiple class="form-control" name="equipo" id="equipo" required disabled>
                     <option value="">Seleccione un cliente</option>
-                </select>
+                </select><br>
+              <a href="controller/controller.php?op=alta_equipo" id="nuevo" class="btn btn-danger btn-xs pull-right" style="display: none">Cargar Equipo</a>
             </div>
+            
             <div class="form-group">
                 <label for="descripcion_falla">Describa la falla que presenta el equipo</label><textarea class="form-control" rows="4" cols="50" id="descripcion_falla" name ="descripcion_falla" required></textarea>
             </div>
             
      <a href="controller/controller.php?op=abm_equipo" class="btn btn-link">Volver al listado</a>
-     <button type="submit" class="btn btn-success pull-right">Guardar</button>
+     <button type="submit" class="btn btn-success pull-right" id="guardar" disabled>Guardar</button>
      
 </form>
 </div>

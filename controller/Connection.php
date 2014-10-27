@@ -49,7 +49,7 @@
 		            $usuario =  $stmt->fetch();
 		            //$user = Usuario $usuario;
 
-		            var_dump($usuario);
+		            
 		            if($usuario === false){
 		            	return false;
 		            }else{
