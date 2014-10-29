@@ -52,7 +52,7 @@
                 <label for="descripcion_falla">Describa la falla que presenta el equipo</label><textarea class="form-control" rows="4" cols="50" id="descripcion_falla" name ="descripcion_falla" required></textarea>
             </div>
             
-     <a href="controller/controller.php?op=abm_equipo" class="btn btn-link">Volver al listado</a>
+     <a href="controller/controller.php?op=abm_orden" class="btn btn-link">Volver al listado</a>
      <button type="submit" class="btn btn-success pull-right" id="guardar" disabled>Guardar</button>
      
 </form>

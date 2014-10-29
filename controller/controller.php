@@ -107,19 +107,20 @@
                          }
              
         }elseif(!empty($_POST['formulario']) && $_POST['formulario'] == 'edit_equipo'){
+            
                         $user                           = unserialize($_SESSION['usuario']);
-			$args['usuario']                = $user->getUser();
-			$args['password']               = $user->getPass();
-                        $args['empleado']               = $user->getId();
-			$args['cliente_id']             = $_POST['cliente_id'];
-			$args['tipo_orden_id']          = $_POST['tipo_orden_id'];
-			$args['equipo']         	= $_POST['equipo'];
-                        $args['descripcion_falla']      = $_POST['descripcion_falla'];
-                        
-
-                        
-                        $estado = alta_orden($args);
-                        
+ 			$args['usuario']                = $user->getUser();
+ 			$args['password']               = $user->getPass();
+ 			$args['tipo_equipo_id']         = $_POST['tipo_equipo_id'];
+ 			$args['cliente_id']             = $_POST['cliente_id'];
+ 			$args['descripcion_equipo']	= $_POST['descripcion_equipo'];
+                        $args['estado_general']         = $_POST['estado_general'];
+                        $args['id']                     = $_POST['id'];
+ 
+                         
+                         $estado = update_equipo($args);
+            
+                      
                         if($estado >= 1){
 				$equipo = obtener_equipo($args);
                                 $_SESSION['tipos_equipo'] = listar_tipos_equipo($usuario->getUser(), $usuario->getPass());
@@ -139,7 +140,37 @@
 			}
                         
         }elseif(!empty($_POST['formulario']) && $_POST['formulario'] == 'nueva_orden'){
-            
+                        
+                        $user                           = unserialize($_SESSION['usuario']);
+			$args['usuario']                = $user->getUser();
+			$args['password']               = $user->getPass();
+                        $args['empleado']               = $user->getId();
+			$args['cliente_id']             = $_POST['cliente_id'];
+			$args['tipo_orden_id']          = $_POST['tipo_orden_id'];
+			$args['equipo']         	= $_POST['equipo'];
+                        $args['descripcion_falla']      = $_POST['descripcion_falla'];
+                        
+
+                        
+                        $estado = alta_orden($args);
+                        if($estado == 1){
+                            $_SESSION['tipos_orden'] = listar_tipos_orden($args);
+                            $_SESSION['clientes']     = listar_clientes($usuario->getUser(), $usuario->getPass());
+
+                            $_SESSION['archivo'] = "nuevo_orden.php";
+                            $_SESSION['listado'] = $results;
+                            header( "Location: ../index.php?conf=ok");
+                            die();
+                        }else{
+                            $_SESSION['tipos_orden'] = listar_tipos_orden($args);
+                            $_SESSION['clientes']     = listar_clientes($usuario->getUser(), $usuario->getPass());
+
+                            $_SESSION['archivo'] = "nuevo_orden.php";
+                            $_SESSION['listado'] = $results;
+                            header( "Location: ../index.php?err=no se pudo guardar");
+                            die();
+                        }
+                        
         }
 
 	if(!empty($_GET['op'])){

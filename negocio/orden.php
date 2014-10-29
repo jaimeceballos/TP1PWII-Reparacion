@@ -6,10 +6,10 @@ function listar_orden($args){
 }
 
 function alta_orden($args){
-    if($args['cliente_id'] == ""){
-        if($args['tipo_orden_id'] == ""){
-            if($args['equipo'] ==""){
-                if($args['descripcion_falla'] == "" or strlen($args['descripcion_falla'])>10){
+    if($args['cliente_id'] != ""){
+        if($args['tipo_orden_id'] != ""){
+            if($args['equipo'] !=""){
+                if($args['descripcion_falla'] != "" or strlen($args['descripcion_falla'])>10){
                     require_once '../dao/ordenDAO.php';
                     return orden_save($args);
                 }else{

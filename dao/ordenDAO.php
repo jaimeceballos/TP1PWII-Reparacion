@@ -37,16 +37,37 @@ function orden_save($args) {
         (!empty($args['id'])) ? $id = $args['id'] : $id=false;
             
         if ($id === false) {
+            $fecha_entrada = date("Y-m-d H:i:s");;
             try {
                 $conn->beginTransaction();
-                $sql = "INSERT INTO orden(cliente_id,empleado_id,tipo_orden_id,descripcion_falla,fecha_entrada) values(:cliente,:empleado,:tipo_orden,:falla,:fecha_entrada)";
+                $sql = "INSERT INTO orden_trabajo(cliente_id,empleado_id,tipo_orden_id,descripcion_falla,fecha_entrada) values(:cliente,:empleado,:tipo_orden,:falla,:fecha_entrada)";
                 $query = $conn->prepare($sql);
                 $query->execute(array(':cliente' => $args['cliente_id'],
                                       ':empleado' => $args['empleado'],
                                       ':tipo_orden' => $args['tipo_orden_id'],
                                       ':falla' => $args['descripcion_falla'],
-                                      ':fecha_entrada'=> time()));
-                $conn->commit();
+                                      ':fecha_entrada'=> $fecha_entrada));
+                if(count($args['equipo']) > 0){
+                    $equipo = $args['equipo'];
+                    foreach($equipo as $eq){
+                        $sql = "INSERT INTO equipo_orden_trabajo(equipo_id,orden_trabajo_id) "
+                              ."values(:eq,(select id from orden_trabajo "
+                              ."where cliente_id = :cliente and empleado_id= :empleado and tipo_orden_id = :tipo_orden and descripcion_falla = :falla and fecha_entrada = :fecha_entrada)) ";
+                        
+                        $query = $conn->prepare($sql);
+                        $query-> execute(array(
+                           ':eq' => $eq,
+                           ':cliente' => $args['cliente_id'],
+                           ':empleado' => $args['empleado'],
+                           ':tipo_orden' => $args['tipo_orden_id'],
+                           ':falla' => $args['descripcion_falla'],
+                           ':fecha_entrada'=> $fecha_entrada 
+                        ));
+                        
+                    }
+                    $conn->commit();
+                }
+                
                 
                 return 1;
             } catch (PDOException $e) {
