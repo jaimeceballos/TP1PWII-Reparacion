@@ -337,6 +337,28 @@
                         session_destroy();
                         die();
                     }
+                }elseif($_GET['op'] == 'edit_orden' ){
+                    $args['id'] = $_GET['row'];
+                    $args['usuario'] = $usuario->getUser();
+                    $args['password'] = $usuario->getPass();
+                    if($usuario->getRol()=='empleado'){
+                        $_SESSION['tipos_orden']    = listar_tipos_orden($args);
+                        $_SESSION['clientes']       = listar_clientes($usuario->getUser(), $usuario->getPass());
+                        $orden                      = get_orden($args);
+                        $args['orden']              = $orden;
+                        $_SESSION['equipos']        = listar_equipos_cliente($orden['cliente_id']);
+                        $_SESSION['orden']          = $orden;
+                        $_SESSION['equipo_orden']   = listar_equipos_orden($args['id']);
+                        $_SESSION['archivo']        = "edit_orden.php";
+                        
+                        header( "Location: ../index.php");
+                        die();
+                        
+                    }else{
+                        header( "Location: controller.php?op=salir");
+                        session_destroy();
+                        die();
+                    }
                 }
 		
 	}

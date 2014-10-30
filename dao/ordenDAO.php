@@ -95,3 +95,27 @@ function orden_save($args) {
         return 0;
     }
 }
+
+function get_orden_by_id($args){
+    $conn = Connection::getConn();
+    if(!$conn){
+        $conn = Connection::userConnection($args['usuario'], $args['password']);
+    }
+    if($conn !== false){
+         try {
+            $sql = "select ot.id, ot.cliente, ot.tipo_orden_id, ot.fecha_entrada,"
+                    . "ot.descripcion_falla,ot.trabajo_realizado,"
+                    . "ot.importe_trabajo,"
+                    . "from orden_trabajo ot "
+                    . "wher ot.id = :id";
+
+            $stmt = $conn->prepare($sql);
+            $stmt->setFetchMode(PDO::FETCH_ASSOC);
+            $stmt->execute(array(':id'=>$args['id']));
+            $results = $stmt->fetchAll();
+            return $results;
+        } catch (PDOException $e) {
+            return -1;
+        }
+    }
+}

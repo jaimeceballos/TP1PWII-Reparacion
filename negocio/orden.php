@@ -25,3 +25,8 @@ function alta_orden($args){
         return "debe indicar el cliente.";
     }
 }
+
+function get_orden($args){
+    require_once '../dao/ordenDAO.php';
+    return get_orden_by_id($args);
+}

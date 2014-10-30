@@ -54,4 +54,5 @@
             require_once '../dao/clienteDAO.php';
             return search($apellido,$nombre,$usuario,$password);
         }
+        function 
         
